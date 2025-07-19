@@ -1,9 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fastapi-app
+  name: fastapi-app-dev
   labels:
     app: fastapi-app
+    environment: dev
 spec:
   replicas: 1
   strategy:
@@ -14,14 +15,16 @@ spec:
   selector:
     matchLabels:
       app: fastapi-app
+      environment: dev
   template:
     metadata:
       labels:
         app: fastapi-app
+        environment: dev
     spec:
       containers:
         - name: fastapi-app
-          image: akshaytredence/fastapi-demo:v3
+          image: akshaytredence/fastapi-demo:v4
           ports:
             - containerPort: 5000
           readinessProbe:
@@ -30,3 +33,6 @@ spec:
               port: 5000
             initialDelaySeconds: 3
             periodSeconds: 5
+
+
+
