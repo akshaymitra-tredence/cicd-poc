@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: fastapi-app
-          image: akshaytredence/fastapi-demo:v2
+          image: akshaytredence/fastapi-demo:v3
           ports:
             - containerPort: 5000
           readinessProbe:
