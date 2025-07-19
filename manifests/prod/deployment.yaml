@@ -4,8 +4,9 @@ metadata:
   name: fastapi-app
   labels:
     app: fastapi-app
+    environment: prod
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -14,10 +15,12 @@ spec:
   selector:
     matchLabels:
       app: fastapi-app
+      environment: prod
   template:
     metadata:
       labels:
         app: fastapi-app
+        environment: prod
     spec:
       containers:
         - name: fastapi-app
