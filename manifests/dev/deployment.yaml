@@ -36,20 +36,3 @@ spec:
 
 
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: fastapi-service-dev
-  namespace: dev
-  labels:
-    app: fastapi-app
-    environment: dev
-spec:
-  selector:
-    app: fastapi-app
-    environment: dev
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5000
-  type: NodePort
