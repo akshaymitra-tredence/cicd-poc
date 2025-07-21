@@ -10,9 +10,14 @@ jobs:
   promote:
     if: github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'dev'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -25,13 +30,15 @@ jobs:
       - name: Promote dev image to prod
         run: python scripts/promote_image.py
 
-      - name: Commit and push updated prod deployment
-        env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-        run: |
-          git config user.name "akshaymitra-tredence"
-          git config user.email "akshay.mitra@tredence.com"
-          git remote set-url origin https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }}
-          git add manifests/prod/deployment.yaml
-          git commit -m "Promote image tag from dev to prod" || echo "No changes to commit"
-          git push
+      - name: Create Pull Request for prod promotion
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          commit-message: "Promote image tag from dev to prod"
+          title: "Auto: Promote image tag from dev to prod"
+          body: |
+            Automated promotion of image tag from dev to prod environment.
+            
+            Triggered by merge of PR #${{ github.event.pull_request.number }}
+          branch: auto-promote-prod
+          delete-branch: true
