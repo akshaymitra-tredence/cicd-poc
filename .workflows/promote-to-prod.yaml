@@ -1,0 +1,32 @@
+name: Promote Image to Prod
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Promote dev image to prod
+        run: python scripts/promote_image.py
+
+      - name: Commit and push updated prod deployment
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add manifests/prod/deployment.yaml
+          git commit -m "Promote image tag from dev to prod"
+          git push
