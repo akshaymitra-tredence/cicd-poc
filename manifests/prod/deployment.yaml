@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fastapi-app
   labels:
     app: fastapi-app
     environment: prod
+  name: fastapi-app
 spec:
   replicas: 2
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
   selector:
     matchLabels:
       app: fastapi-app
       environment: prod
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -23,13 +23,13 @@ spec:
         environment: prod
     spec:
       containers:
-        - name: fastapi-app
-          image: akshaytredence/fastapi-demo:v4
-          ports:
-            - containerPort: 5000
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 5000
-            initialDelaySeconds: 3
-            periodSeconds: 5
+      - image: akshaytredence/fastapi-demo:v8
+        name: fastapi-app
+        ports:
+        - containerPort: 5000
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 3
+          periodSeconds: 5
