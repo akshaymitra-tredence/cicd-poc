@@ -29,8 +29,8 @@ jobs:
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@users.noreply.github.com"
+          git config user.name "akshaymitra-tredence"
+          git config user.email "akshay.mitra@tredence.com"
           git remote set-url origin https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }}
           git add manifests/prod/deployment.yaml
           git commit -m "Promote image tag from dev to prod" || echo "No changes to commit"
