@@ -26,9 +26,12 @@ jobs:
         run: python scripts/promote_image.py
 
       - name: Commit and push updated prod deployment
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }}
           git add manifests/prod/deployment.yaml
-          git commit -m "Promote image tag from dev to prod"
+          git commit -m "Promote image tag from dev to prod" || echo "No changes to commit"
           git push
