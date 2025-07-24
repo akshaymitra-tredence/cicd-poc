@@ -23,7 +23,7 @@ spec:
         environment: prod
     spec:
       containers:
-      - image: akshaytredence/fastapi-demo:v8
+      - image: akshaytredence/fastapi-demo:v9
         name: fastapi-app
         ports:
         - containerPort: 5000
